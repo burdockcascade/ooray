@@ -49,6 +49,7 @@ if(OORAY_BUILD_TESTS)
             tests/test_vector3.cpp
             tests/test_vector4.cpp
             tests/test_rectangle.cpp
+            tests/test_matrix.cpp
     )
 
     add_executable(unit-tests ${TEST_SOURCES})
