@@ -50,6 +50,7 @@ if(OORAY_BUILD_TESTS)
             tests/test_vector4.cpp
             tests/test_rectangle.cpp
             tests/test_matrix.cpp
+            tests/test_color.cpp
     )
 
     add_executable(unit-tests ${TEST_SOURCES})
