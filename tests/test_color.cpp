@@ -1,13 +1,13 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 
-#include "color.hpp"
+#include "ooray.hpp"
 
 using Catch::Matchers::WithinRel;
 
 TEST_CASE("ooray::Color - Constructors and Interoperability", "[Color]") {
     SECTION("Default constructor initializes to black with full opacity") {
-        ooray::Color c;
+        OORAY::Color c;
         REQUIRE(c.r == 0);
         REQUIRE(c.g == 0);
         REQUIRE(c.b == 0);
@@ -15,7 +15,7 @@ TEST_CASE("ooray::Color - Constructors and Interoperability", "[Color]") {
     }
 
     SECTION("Explicit component constructor with default alpha") {
-        ooray::Color c(128, 64, 32);
+        OORAY::Color c(128, 64, 32);
         REQUIRE(c.r == 128);
         REQUIRE(c.g == 64);
         REQUIRE(c.b == 32);
@@ -23,7 +23,7 @@ TEST_CASE("ooray::Color - Constructors and Interoperability", "[Color]") {
     }
 
     SECTION("Hex value constructor") {
-        ooray::Color c(0xFF8844FF);
+        OORAY::Color c(0xFF8844FF);
         REQUIRE(c.r == 0xFF);
         REQUIRE(c.g == 0x88);
         REQUIRE(c.b == 0x44);
@@ -32,7 +32,7 @@ TEST_CASE("ooray::Color - Constructors and Interoperability", "[Color]") {
 
     SECTION("Conversion to and from C-struct ::Color") {
         ::Color raw{200, 100, 50, 255};
-        ooray::Color wrapped = raw;
+        OORAY::Color wrapped = raw;
 
         REQUIRE(wrapped.r == 200);
         REQUIRE(wrapped.g == 100);
@@ -47,16 +47,16 @@ TEST_CASE("ooray::Color - Constructors and Interoperability", "[Color]") {
     }
 
     SECTION("Static Color Presets") {
-        REQUIRE(ooray::Color::Red() == ooray::Color(230, 41, 55, 255));
-        REQUIRE(ooray::Color::Green() == ooray::Color(0, 228, 48, 255));
-        REQUIRE(ooray::Color::White() == ooray::Color(255, 255, 255, 255));
-        REQUIRE(ooray::Color::Black() == ooray::Color(0, 0, 0, 255));
+        REQUIRE(OORAY::Color::Red() == OORAY::Color(230, 41, 55, 255));
+        REQUIRE(OORAY::Color::Green() == OORAY::Color(0, 228, 48, 255));
+        REQUIRE(OORAY::Color::White() == OORAY::Color(255, 255, 255, 255));
+        REQUIRE(OORAY::Color::Black() == OORAY::Color(0, 0, 0, 255));
     }
 }
 
 TEST_CASE("ooray::Color - Conversions and Utility Methods", "[Color]") {
     SECTION("Conversion to Vector4 (Normalized float components)") {
-        ooray::Color c(255, 0, 0, 255);
+        OORAY::Color c(255, 0, 0, 255);
         Vector4 norm = c.ToVector4();
 
         REQUIRE_THAT(norm.x, WithinRel(1.0f, 0.0001f));
@@ -67,17 +67,17 @@ TEST_CASE("ooray::Color - Conversions and Utility Methods", "[Color]") {
 
     SECTION("Normalized Vector4 back to Color") {
         Vector4 norm{0.0f, 1.0f, 0.0f, 1.0f};
-        ooray::Color c = ooray::Color::FromNormalized(norm);
+        OORAY::Color c = OORAY::Color::FromNormalized(norm);
 
-        REQUIRE(c == ooray::Color(0, 255, 0, 255));
+        REQUIRE(c == OORAY::Color(0, 255, 0, 255));
     }
 
 }
 
 TEST_CASE("ooray::Color - Color Transformations and Operations", "[Color]") {
     SECTION("Fade method creates color with scaled alpha") {
-        ooray::Color red = ooray::Color::Red();
-        ooray::Color faded = red.Fade(0.5f);
+        OORAY::Color red = OORAY::Color::Red();
+        OORAY::Color faded = red.GetFade(0.5f);
 
         REQUIRE(faded.r == red.r);
         REQUIRE(faded.g == red.g);
@@ -86,17 +86,17 @@ TEST_CASE("ooray::Color - Color Transformations and Operations", "[Color]") {
     }
 
     SECTION("In-place ApplyFade mutates color directly") {
-        ooray::Color c = ooray::Color::White();
+        OORAY::Color c = OORAY::Color::White();
         c.ApplyFade(0.2f);
 
         REQUIRE(c.a == 51);
     }
 
     SECTION("Linear Interpolation (Lerp)") {
-        ooray::Color black = ooray::Color::Black();
-        ooray::Color white = ooray::Color::White();
+        OORAY::Color black = OORAY::Color::Black();
+        OORAY::Color white = OORAY::Color::White();
 
-        ooray::Color gray = black.Lerp(white, 0.5f);
+        OORAY::Color gray = black.GetLerp(white, 0.5f);
         REQUIRE(gray.r == 127);
         REQUIRE(gray.g == 127);
         REQUIRE(gray.b == 127);
@@ -104,16 +104,16 @@ TEST_CASE("ooray::Color - Color Transformations and Operations", "[Color]") {
     }
 
     SECTION("Color Tinting") {
-        ooray::Color white = ooray::Color::White();
-        ooray::Color red = ooray::Color::Red();
+        OORAY::Color white = OORAY::Color::White();
+        OORAY::Color red = OORAY::Color::Red();
 
-        ooray::Color tinted = white.Tint(red);
+        OORAY::Color tinted = white.GetTint(red);
         REQUIRE(tinted == red);
     }
 
     SECTION("Contrast and Brightness adjustment") {
-        ooray::Color c(100, 100, 100, 255);
-        ooray::Color brighter = c.Brightness(0.5f);
+        OORAY::Color c(100, 100, 100, 255);
+        OORAY::Color brighter = c.GetBrightness(0.5f);
 
         REQUIRE(brighter.r > c.r);
         REQUIRE(brighter.g > c.g);

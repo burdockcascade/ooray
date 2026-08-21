@@ -1,13 +1,13 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 
-#include "rectangle.hpp"
+#include "ooray.hpp"
 
 using Catch::Matchers::WithinRel;
 
 TEST_CASE("ooray::Rectangle - Constructors and Interoperability", "[Rectangle]") {
     SECTION("Default constructor initializes to zeros") {
-        ooray::Rectangle r;
+        OORAY::Rectangle r;
         REQUIRE(r.x == 0.0f);
         REQUIRE(r.y == 0.0f);
         REQUIRE(r.width == 0.0f);
@@ -15,7 +15,7 @@ TEST_CASE("ooray::Rectangle - Constructors and Interoperability", "[Rectangle]")
     }
 
     SECTION("Scalar value constructor") {
-        ooray::Rectangle r(10.0f, 20.0f, 100.0f, 200.0f);
+        OORAY::Rectangle r(10.0f, 20.0f, 100.0f, 200.0f);
         REQUIRE(r.x == 10.0f);
         REQUIRE(r.y == 20.0f);
         REQUIRE(r.width == 100.0f);
@@ -23,17 +23,17 @@ TEST_CASE("ooray::Rectangle - Constructors and Interoperability", "[Rectangle]")
     }
 
     SECTION("Vector2 position and size constructor") {
-        ooray::Vector2 pos(15.0f, 25.0f);
-        ooray::Vector2 size(50.0f, 60.0f);
-        ooray::Rectangle r(pos, size);
+        OORAY::Vector2 pos(15.0f, 25.0f);
+        OORAY::Vector2 size(50.0f, 60.0f);
+        OORAY::Rectangle r(pos, size);
 
-        REQUIRE(r.Position() == pos);
-        REQUIRE(r.Size() == size);
+        REQUIRE(r.GetPosition() == pos);
+        REQUIRE(r.GetSize() == size);
     }
 
     SECTION("Conversion to and from C-struct ::Rectangle") {
         ::Rectangle raw{5.0f, 10.0f, 30.0f, 40.0f};
-        ooray::Rectangle wrapped = raw;
+        OORAY::Rectangle wrapped = raw;
 
         REQUIRE(wrapped.x == 5.0f);
         REQUIRE(wrapped.y == 10.0f);
@@ -49,7 +49,7 @@ TEST_CASE("ooray::Rectangle - Constructors and Interoperability", "[Rectangle]")
 }
 
 TEST_CASE("ooray::Rectangle - Bounds and Edge Helpers", "[Rectangle]") {
-    ooray::Rectangle r(10.0f, 20.0f, 100.0f, 50.0f);
+    OORAY::Rectangle r(10.0f, 20.0f, 100.0f, 50.0f);
 
     SECTION("Edges and Bounds") {
         REQUIRE(r.Left() == 10.0f);
@@ -59,7 +59,7 @@ TEST_CASE("ooray::Rectangle - Bounds and Edge Helpers", "[Rectangle]") {
     }
 
     SECTION("Center calculation") {
-        ooray::Vector2 center = r.Center();
+        OORAY::Vector2 center = r.Center();
         REQUIRE_THAT(center.x, WithinRel(60.0f, 0.0001f));
         REQUIRE_THAT(center.y, WithinRel(45.0f, 0.0001f));
     }
@@ -75,9 +75,9 @@ TEST_CASE("ooray::Rectangle - Bounds and Edge Helpers", "[Rectangle]") {
 }
 
 TEST_CASE("ooray::Rectangle - Collisions", "[Rectangle]") {
-    ooray::Rectangle a(0.0f, 0.0f, 100.0f, 100.0f);
-    ooray::Rectangle b(50.0f, 50.0f, 100.0f, 100.0f);
-    ooray::Rectangle c(200.0f, 200.0f, 50.0f, 50.0f);
+    OORAY::Rectangle a(0.0f, 0.0f, 100.0f, 100.0f);
+    OORAY::Rectangle b(50.0f, 50.0f, 100.0f, 100.0f);
+    OORAY::Rectangle c(200.0f, 200.0f, 50.0f, 50.0f);
 
     SECTION("Point containment") {
         REQUIRE(a.Contains({50.0f, 50.0f}));
@@ -90,7 +90,7 @@ TEST_CASE("ooray::Rectangle - Collisions", "[Rectangle]") {
     }
 
     SECTION("Get collision intersection rectangle") {
-        ooray::Rectangle intersection = a.GetCollision(b);
-        REQUIRE(intersection == ooray::Rectangle(50.0f, 50.0f, 50.0f, 50.0f));
+        OORAY::Rectangle intersection = a.GetCollision(b);
+        REQUIRE(intersection == OORAY::Rectangle(50.0f, 50.0f, 50.0f, 50.0f));
     }
 }
