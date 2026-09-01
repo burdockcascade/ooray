@@ -27,7 +27,7 @@ FetchContent_MakeAvailable(raylib)
 
 # 2. Static library for ooray
 add_library(ooray STATIC
-        src/ooray.cpp
+        src/oor_window.cpp
 )
 
 target_include_directories(ooray PUBLIC include)
@@ -50,6 +50,9 @@ target_link_libraries(ooray PUBLIC raylib)
 
     set(TEST_SOURCES
             tests/test_window.cpp
+            tests/test_vector2.cpp
+            tests/test_vector3.cpp
+            tests/test_vector4.cpp
     )
 
     add_executable(unit-tests ${TEST_SOURCES})

@@ -1,9 +1,8 @@
-#include "ooray.hpp"
 #include <raylib.h>
+#include "ooray.hpp"
+#include "oor_window.hpp"
 
 namespace ooray {
-
-#pragma region Window
 
     Window::Window(int width, int height, const std::string& title) {
         ::InitWindow(width, height, title.c_str());
@@ -149,7 +148,5 @@ namespace ooray {
     bool Window::IsCursorOnScreen() const {
         return ::IsCursorOnScreen();
     }
-
-#pragma endregion
 
 }
